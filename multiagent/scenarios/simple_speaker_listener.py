@@ -57,7 +57,7 @@ class Scenario(BaseScenario):
 
     def benchmark_data(self, agent, world):
         # returns data for benchmarking purposes
-        return reward(agent, reward)
+        return reward(agent, world)
 
     def reward(self, agent, world):
         # squared distance from listener to landmark

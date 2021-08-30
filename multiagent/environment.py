@@ -33,7 +33,7 @@ class MultiAgentEnv(gym.Env):
         # if true, even the action is continuous, action will be performed discretely
         self.force_discrete_action = world.discrete_action if hasattr(world, 'discrete_action') else False
         # if true, every agent has the same reward
-        self.shared_reward = False
+        self.shared_reward = world.collaborative if hasattr(world, 'collaborative') else False
         self.time = 0
 
         # configure spaces
@@ -75,13 +75,13 @@ class MultiAgentEnv(gym.Env):
             self.viewers = [None] * self.n
         self._reset_render()
 
-    def _seed(self, seed=None):
+    def seed(self, seed=None):
         if seed is None:
             np.random.seed(1)
         else:
             np.random.seed(seed)
 
-    def _step(self, action_n):
+    def step(self, action_n):
         obs_n = []
         reward_n = []
         done_n = []
@@ -108,7 +108,7 @@ class MultiAgentEnv(gym.Env):
             self.post_step_callback(self.world)
         return obs_n, reward_n, done_n, info_n
 
-    def _reset(self):
+    def reset(self):
         # reset world
         self.reset_callback(self.world)
         # reset renderer
