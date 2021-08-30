@@ -202,14 +202,14 @@ class MultiAgentEnv(gym.Env):
         self.render_geoms_xform = None
 
     # render environment
-    def _render(self, mode='human', close=True):
-        if close:
-            # close any existic renderers
-            for i,viewer in enumerate(self.viewers):
-                if viewer is not None:
-                    viewer.close()
-                self.viewers[i] = None
-            return []
+    def render(self, mode='human'):#, close=False):
+        # if close:
+        #     # close any existic renderers
+        #     for i,viewer in enumerate(self.viewers):
+        #         if viewer is not None:
+        #             viewer.close()
+        #         self.viewers[i] = None
+        #     return []
 
         if mode == 'human':
             alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -359,7 +359,7 @@ class BatchMultiAgentEnv(gym.Env):
     def observation_space(self):
         return self.env_batch[0].observation_space
 
-    def _step(self, action_n, time):
+    def step(self, action_n, time):
         obs_n = []
         reward_n = []
         done_n = []
@@ -374,15 +374,15 @@ class BatchMultiAgentEnv(gym.Env):
             done_n += done
         return obs_n, reward_n, done_n, info_n
 
-    def _reset(self):
+    def reset(self):
         obs_n = []
         for env in self.env_batch:
             obs_n += env.reset()
         return obs_n
 
     # render environment
-    def _render(self, mode='human', close=True):
+    def render(self, mode='human'):#,close=False)
         results_n = []
         for env in self.env_batch:
-            results_n += env.render(mode, close)
+            results_n += env.render(mode)#,close)
         return results_n
